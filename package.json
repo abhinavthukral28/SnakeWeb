@@ -1,0 +1,23 @@
+{
+  "name": "SnakeWeb",
+  "version": "1.0.0",
+  "description": "A node.js Game on HTML5 Canvas!",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abhinavthukral28/SnakeWeb.git"
+  },
+  "author": "Allan J Luke, Abhinav Thukral",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abhinavthukral28/SnakeWeb/issues"
+  },
+  "homepage": "https://github.com/abhinavthukral28/SnakeWeb",
+  "dependencies": {
+    "routes": "^2.1.0",
+    "socket.io": "^1.3.7"
+  }
+}
