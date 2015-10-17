@@ -96,10 +96,11 @@ io.on('connection', function(socket) {
     console.log(data);
   });
   socket.on('setUser', function(data) {
-    socket.set('user', data);
+    socket.user = data;
   });
   socket.on('message', function(message) {
     socket.get('user', function(err, username) {
+      
       var data = {
         'message': message,
         user: username
