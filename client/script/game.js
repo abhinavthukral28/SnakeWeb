@@ -2,6 +2,9 @@ var canvas;
 var userSnake;
 var snakes = [];
 var timer;
+
+
+var processing = false;
 $(document).ready(function() {
 
     initHandlers();
@@ -9,7 +12,7 @@ $(document).ready(function() {
     snakes.push(snake);
     userSnake = snake;
 
-    timer = setInterval(handleTimer, 100);
+    timer = setInterval(handleTimer, 25);
     canvas = document.getElementById('gameCanvas');
     drawCanvas();
 });
@@ -47,7 +50,7 @@ function drawCanvas() {
                         tempNode.direction = nodes[j - 1].direction;
                     }
                     tempNode.pivots.shift();
-               
+
 
                 }
             }
@@ -103,37 +106,41 @@ var DOWN_ARROW = 40;
 
 
 function handleKeyDown(e) {
-    var keyPress = e.which;
-    var currentDirection = userSnake.getDirection();
-    switch (keyPress) {
-        case UP_ARROW:
-            if (currentDirection != Snake.directions.DOWN)
-                userSnake.startTurn(Snake.directions.UP);
-            e.stopPropagation();
-            e.preventDefault();
-            break;
-        case RIGHT_ARROW:
-            if (currentDirection != Snake.directions.LEFT)
-                userSnake.startTurn(Snake.directions.RIGHT);
-            e.stopPropagation();
-            e.preventDefault();
-            break;
-        case LEFT_ARROW:
-            if (currentDirection != Snake.directions.RIGHT)
-                userSnake.startTurn(Snake.directions.LEFT);
-            e.stopPropagation();
-            e.preventDefault();
-            break;
-        case DOWN_ARROW:
-            if (currentDirection != Snake.directions.UP)
-                userSnake.startTurn(Snake.directions.DOWN);
-            e.stopPropagation();
-            e.preventDefault();
-            break;
-        default:
-            break;
-    }
+ 
+        var keyPress = e.which;
+        var currentDirection = userSnake.getDirection();
+        switch (keyPress) {
+            case UP_ARROW:
+                if (currentDirection != Snake.directions.DOWN)
+                    userSnake.startTurn(Snake.directions.UP);
+                e.stopPropagation();
+                e.preventDefault();
+                break;
+            case RIGHT_ARROW:
+                if (currentDirection != Snake.directions.LEFT)
+                    userSnake.startTurn(Snake.directions.RIGHT);
+                e.stopPropagation();
+                e.preventDefault();
+                break;
+            case LEFT_ARROW:
+                if (currentDirection != Snake.directions.RIGHT)
+                    userSnake.startTurn(Snake.directions.LEFT);
+                e.stopPropagation();
+                e.preventDefault();
+                break;
+            case DOWN_ARROW:
+                if (currentDirection != Snake.directions.UP)
+                    userSnake.startTurn(Snake.directions.DOWN);
+                e.stopPropagation();
+                e.preventDefault();
+                break;
+            default:
+                break;
+        }
+   
 
 
 
 }
+
+ 

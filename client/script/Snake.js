@@ -54,7 +54,7 @@
    return color;
   }
 
-  this.startTurn = function(direction) {
+  this.startTurn = function(direction,callback) {
 
 
    var pivot = [];
@@ -67,7 +67,7 @@
    // pivotPoints.push(pivot);
    // nodes[0].direction = direction;
    DIRECTION = direction;
-
+   callback();
   }
 
   this.getPivot = function() {
