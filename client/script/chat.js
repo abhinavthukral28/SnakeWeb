@@ -5,8 +5,7 @@ function appendMessage(message, username) {
 }
 function sendMessage() {
     console.log("Chat Sender Acdtivated");
-    if ($('#chatInput').val() != "") 
-    {
+    if ($('#chatInput').val() != "") {
         var data = {
             userName: user,
             message: $("#chatInput").val()
@@ -15,16 +14,19 @@ function sendMessage() {
         appendMessage(data.message, "Me");
 
     }
-    
+
 }
 function setUser() {
     if ($("#newUnserField").val() != "") {
         user = $("#newUserField").val();
         socket.emit('setUser', user);
-}
+        $('#enterName').hide();
+        $('#messageBoardSection').show();
+        $('#messageSendSection').show();
+    }
 
 }
 
-socket.on("message", function(data) {
+socket.on("message", function (data) {
     appendMessage(data.userName, data.message);
 });
