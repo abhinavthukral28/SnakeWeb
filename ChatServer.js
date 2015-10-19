@@ -1,6 +1,4 @@
-var io = require("socket.io");
-var chatServer = function(app) {
-    io = io(app);
+var chatServer = function(io) {
     io.on('connection', function(socket) {
         socket.on('message', function(data) {
 
