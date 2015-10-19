@@ -4,8 +4,8 @@ var path = require('path');
 
 var clientHome = __dirname + "/client/"
 var homePage = clientHome + "index.html";
-var io = require('socket.io')(app);
-app.listen("3000", "127.0.0.1");
+var chat = require('./ChatServer.js')(app);
+app.listen(process.env.PORT, process.env.IP);
 
 var users = {};
 
@@ -81,7 +81,7 @@ function stdOut(out) {
     console.log(out);
 }
 
-io.on('connection', function (socket) {
+/*io.on('connection', function (socket) {
     socket.on('setUser', function (user) {
         socket.user = user;
     });
@@ -89,5 +89,5 @@ io.on('connection', function (socket) {
 
         socket.broadcast.emit('message', data);
 
-    });
-});
+    });*/
+// });

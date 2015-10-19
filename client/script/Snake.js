@@ -67,7 +67,6 @@
    // pivotPoints.push(pivot);
    // nodes[0].direction = direction;
    DIRECTION = direction;
-   callback();
   }
 
   this.getPivot = function() {
@@ -77,15 +76,11 @@
   this.isTurning = function() {
    return pivot !== undefined;
   }
-
-  this.stopTurn = function() {
-   pivot = undefined;
-   return pivotPoints.shift();
-  }
+ 
 
   //NEED TO INIT FROM PURELY ADD NODE
   nodes.push(new Node(50, 50, Snake.directions.UP));
-  for (var i = 0; i < 5; i++)
+  for (var i = 0; i < 15; i++)
    this.addNode();
 
  }
@@ -122,4 +117,4 @@
  }
 
 
- Node.radius = 2;
+ Node.radius = 10;
