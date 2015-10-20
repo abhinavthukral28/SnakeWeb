@@ -1,25 +1,18 @@
- var Snake = function() {
+ var Snake = function(username,color,x,y) {
   var thisObj = this;
   var DIRECTION = Snake.directions.UP;
-  var color = Snake.colors.BLUE;
+  var color = color;
   var length;
   var nodes = [];
-
-
-
-  //implement
-  //this.removeNode(node)
-  //this.setDirection(node)
-  //this.getHead()
-  //this
-
   this.getNodes = function() {
    return nodes;
   }
 
   this.addNode = function() {
    var lastNode = nodes[nodes.length - 1];
-   var newNode = new Node(0, 0, DIRECTION);
+   var newNode = new Node(0, 0, lastNode.direction);
+   newNode.pivots = lastNode.pivots.slice();
+   
    switch (lastNode.direction) {
     case Snake.directions.DOWN:
      newNode.x = lastNode.x;
@@ -65,7 +58,7 @@
    }
 
    // pivotPoints.push(pivot);
-   // nodes[0].direction = direction;
+   nodes[0].direction = direction;
    DIRECTION = direction;
   }
 
@@ -79,8 +72,8 @@
  
 
   //NEED TO INIT FROM PURELY ADD NODE
-  nodes.push(new Node(50, 50, Snake.directions.UP));
-  for (var i = 0; i < 15; i++)
+  nodes.push(new Node(x, y, Snake.directions.DOWN));
+  for (var i = 0; i < 3; i++)
    this.addNode();
 
  }
@@ -88,16 +81,7 @@
 
 
 
- Snake.fromJSON = function(jsonString) {
-  //parseJSONString
- }
- Snake.colors = {
-  RED: "red",
-  BLUE: "blue",
-  YELLOW: "yellow",
-  WHITE: "white",
-  ORANGE: "orange"
- }
+ 
 
  Snake.directions = {
   UP: "UP",
@@ -118,3 +102,6 @@
 
 
  Node.radius = 10;
+ 
+ 
+ 

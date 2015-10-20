@@ -1,59 +1,68 @@
 var canvas;
-var userSnake;
-var snakes = [];
+
+
 var drawTimer;
 var food = {};
+var keys = 0;
 var processing = false;
+var animate = false;
+var interval = 50;
+var Game = {
+    snakes: [],
+    userSnake: undefined
+};
+
+
+
 $(document).ready(function() {
+
     canvas = document.getElementById('gameCanvas');
-    canvas.width = window.innerWidth/2;
-    canvas.height = window.innerHeight/2;
+    canvas.width = window.innerWidth / 2;
+    canvas.height = window.innerHeight / 2;
     food.radius = 10;
     food.color = "purple";
-    food.x = canvas.width/2;
-    food.y = canvas.height/2;
+    food.x = canvas.width / 2;
+    food.y = canvas.height / 2;
     initHandlers();
-    var snake = new Snake();
-    snakes.push(snake);
-    userSnake = snake;
-
-     
-    
-    drawTimer = setInterval(handleTimer, 7);
-
-    
-
+    drawTimer = setInterval(handleTimer, interval);
     drawCanvas();
+
+
+
+
 });
+
+function startGame() {
+    interval = 7;
+    animate = true;
+}
 
 
 function drawCanvas() {
     var context = canvas.getContext('2d');
     context.fillStyle = 'black';
     context.fillRect(0, 0, canvas.width, canvas.height);
-        
+
     context.beginPath();
-            context.arc(food.x, food.y, food.radius, 0, 2 * Math.PI, false);
-            context.fillStyle = food.color;
-            context.fill();
-            context.stroke();    
-        
+    context.arc(food.x, food.y, food.radius, 0, 2 * Math.PI, false);
+    context.fillStyle = food.color;
+    context.fill();
+    context.stroke();
+
     var snake;
     var nodes;
     var tempNode;
-    for (var i = 0; i < snakes.length; i++) {
-        snake = snakes[i];
+    for (var i = 0; i < Game.snakes.length; i++) {
+        snake = Game.snakes[i];
+        if (eatingFood(snake)) {
+            resetFood();
+            snake.addNode();
+        }
+
         nodes = snake.getNodes();
+
         for (var j = 0; j < nodes.length; j++) {
-            
-            if (j ==0)
-            {
-                if (eatingFood(snake))
-                {
-                    resetFood();
-                    snake.addNode();
-                }
-            }
+
             tempNode = nodes[j];
 
             context.beginPath();
@@ -62,41 +71,40 @@ function drawCanvas() {
             context.fill();
             context.stroke();
 
+            if (animate) {
+                if (tempNode.pivots.length !== 0) {
 
-            if (tempNode.pivots.length !== 0) {
+                    var pivot = tempNode.pivots[0];
 
-                var pivot = tempNode.pivots[0];
+                    if (tempNode.x === pivot[0] && tempNode.y === pivot[1]) {
 
-                if (tempNode.x === pivot[0] && tempNode.y === pivot[1]) {
+                        if (j != 0) {
+                            tempNode.direction = nodes[j - 1].direction;
+                        }
 
-                    if (j == 0) {
-                        tempNode.direction = snake.getDirection();
+                        tempNode.pivots.shift();
+
                     }
-                    else {
-                        tempNode.direction = nodes[j - 1].direction;
-                    }
-                    tempNode.pivots.shift();
+                }
+
+
+                switch (tempNode.direction) {
+                    case Snake.directions.DOWN:
+                        tempNode.y++;
+                        break;
+                    case Snake.directions.LEFT:
+                        tempNode.x--;
+                        break;
+                    case Snake.directions.RIGHT:
+                        tempNode.x++;
+                        break;
+                    case Snake.directions.UP:
+                        tempNode.y--;
+                        break;
+                    default:
+                        break;
 
                 }
-            }
-
-
-            switch (tempNode.direction) {
-                case Snake.directions.DOWN:
-                    tempNode.y++;
-                    break;
-                case Snake.directions.LEFT:
-                    tempNode.x--;
-                    break;
-                case Snake.directions.RIGHT:
-                    tempNode.x++;
-                    break;
-                case Snake.directions.UP:
-                    tempNode.y--;
-                    break;
-                default:
-                    break;
-
             }
         }
     }
@@ -115,6 +123,7 @@ function resetFood() {
 
 function initHandlers() {
     $(document).keydown(handleKeyDown);
+    $(document).keyup(handleKeyUp);
 }
 
 
@@ -124,55 +133,83 @@ var LEFT_ARROW = 37;
 var UP_ARROW = 38;
 var DOWN_ARROW = 40;
 
+function handleKeyUp(e) {
+    if (keys > 0) {
+
+        var keyPress = e.which;
+        switch (keyPress) {
+            case UP_ARROW:
+            case RIGHT_ARROW:
+            case LEFT_ARROW:
+            case DOWN_ARROW:
+                keys--;
+                console.log(keys);
+                break;
+            default:
+                break;
+        }
+    }
+}
 
 function handleKeyDown(e) {
 
-    var keyPress = e.which;
-    var currentDirection = userSnake.getDirection();
-    switch (keyPress) {
-        case UP_ARROW:
-            if (currentDirection != Snake.directions.DOWN)
-                userSnake.startTurn(Snake.directions.UP);
-            e.stopPropagation();
-            e.preventDefault();
-            break;
-        case RIGHT_ARROW:
-            if (currentDirection != Snake.directions.LEFT)
-                userSnake.startTurn(Snake.directions.RIGHT);
-            e.stopPropagation();
-            e.preventDefault();
-            break;
-        case LEFT_ARROW:
-            if (currentDirection != Snake.directions.RIGHT)
-                userSnake.startTurn(Snake.directions.LEFT);
-            e.stopPropagation();
-            e.preventDefault();
-            break;
-        case DOWN_ARROW:
-            if (currentDirection != Snake.directions.UP)
-                userSnake.startTurn(Snake.directions.DOWN);
-            e.stopPropagation();
-            e.preventDefault();
-            break;
-        default:
-            break;
+
+    if (keys == 0) {
+        var keyPress = e.which;
+        if (Game.userSnake != undefined) {
+            var currentDirection = Game.userSnake.getDirection();
+            switch (keyPress) {
+                case UP_ARROW:
+                    keys++;
+                    if (currentDirection != Snake.directions.DOWN)
+                        Game.userSnake.startTurn(Snake.directions.UP);
+                    e.stopPropagation();
+                    e.preventDefault();
+                    break;
+                case RIGHT_ARROW:
+                    keys++;
+                    if (currentDirection != Snake.directions.LEFT)
+                        Game.userSnake.startTurn(Snake.directions.RIGHT);
+                    e.stopPropagation();
+                    e.preventDefault();
+                    break;
+                case LEFT_ARROW:
+                    keys++;
+                    if (currentDirection != Snake.directions.RIGHT)
+                        Game.userSnake.startTurn(Snake.directions.LEFT);
+                    e.stopPropagation();
+                    e.preventDefault();
+                    break;
+                case DOWN_ARROW:
+                    keys++;
+                    if (currentDirection != Snake.directions.UP)
+                        Game.userSnake.startTurn(Snake.directions.DOWN);
+                    e.stopPropagation();
+                    e.preventDefault();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+
     }
-
-
-
-
+    else {
+        e.stopPropagation();
+        e.preventDefault();
+    }
 }
 
-function eatingFood(snake)
-{
+function eatingFood(snake) {
     var head = snake.getNodes()[0];
-    var temp = Math.pow((food.radius-Node.radius),2);
-    var dist = Math.pow(food.x - head.x,2) + Math.pow(food.y - head.y,2);
-    var radiiDiff = Math.pow (food.radius - head.radius,2);
-    var radiiSum = Math.pow (food.radius + head.radius,2);
-    
-    return (dist >= radiiDiff && dist <= radiiSum)
-//   (R0-R1)^2 <= (x0-x1)^2+(y0-y1)^2 <= (R0+R1)^2
-    
-     
+
+    var dist = Math.pow(food.x - head.x, 2) + Math.pow(food.y - head.y, 2);
+    var radiiDiff = Math.pow(food.radius - Node.radius, 2);
+    var radiiSum = Math.pow(food.radius + Node.radius, 2);
+
+    return (dist >= radiiDiff && dist <= radiiSum);
+
+
+
 }

@@ -1,0 +1,20 @@
+    var user = function(username, color, startPointm, index) {
+        this.username = username;
+        var score = 0;
+        this.index = index;
+        this.snake = new Snake(username, color, startPoint);
+        this.incrementScore = function(){
+            score = score + 1;
+            return score;
+        }
+    }
+    module.exports = user;
+
+
+    var Snake = function(username, color, startPoint) {
+        this.color = color;
+        this.username;
+        this.x = startPoint[0];
+        this.y = startPoint[1];
+    }
+

@@ -2,10 +2,11 @@ var app = require('http').createServer(handler);
 var fs = require('fs');
 var path = require('path');
 
-var clientHome = __dirname + "/client/"
+var clientHome = "../client/";
 var homePage = clientHome + "index.html";
 var io = require("socket.io")(app)
 var chat = require('./ChatServer.js')(io);
+var user = require("./game.js")(io);
 app.listen(process.env.PORT, process.env.IP);
 
 var users = {};
@@ -16,7 +17,7 @@ function handler(req, res) {
     if (pathSplit.length == 2) {
         if (path[2] != "favicon.ico") {
             fs.readFile(homePage,
-                function (err, data) {
+                function(err, data) {
                     if (err) {
                         res.writeHead(500);
                         return res.end('Error loading index.html');
@@ -33,11 +34,11 @@ function handler(req, res) {
     }
 
     if (isStaticResource(pathSplit)) {
-        var data = getStaticResource(pathSplit, function (data) {
+        var data = getStaticResource(pathSplit, function(data) {
             if (data == undefined) {
 
                 fs.readFile(homePage,
-                    function (err, data) {
+                    function(err, data) {
                         if (err) {
                             res.writeHead(500);
                             return res.end('Error loading index.html');
@@ -61,7 +62,7 @@ function handler(req, res) {
 
 
 function getStaticResource(split, callback) {
-    return fs.readFile(clientHome + split[2] + path.sep + split[3], function (err, data) {
+    return fs.readFile(clientHome + split[2] + path.sep + split[3], function(err, data) {
         if (err) {
 
             callback(undefined);
@@ -81,16 +82,3 @@ function isStaticResource(splitPath) {
 function stdOut(out) {
     console.log(out);
 }
-
-/*io.on('connection', function functionName() {
-    
-}unction (socket) {
-    socket.on('setUser', function (user) {
-        socket.user = user;
-    });
-    socket.on('message', function (data) {
-
-        socket.broadcast.emit('message', data);
-
-    });*/
-// });

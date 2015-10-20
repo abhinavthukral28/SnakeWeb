@@ -14,7 +14,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
+    crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha256-Sk3nkD6mLTMOF0EOpNtsIry+s1CsaqQC1rVLTAy+0yc= sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/client/styles/app.css" type="text/css" />
     <script src="/client/script/Snake.js"></script>
@@ -28,7 +29,7 @@
     <!--    });-->
     <!--</script>-->
     <script>
-        $( document ).ready(function(){
+        $(document).ready(function() {
             $('#messageBoardSection').hide();
             $('#messageSendSection').hide();
         })
@@ -60,11 +61,11 @@
             </div>
             <div class="row" id="messageBoardSection">
                 <div id="chatBoard" class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                <h2>Message Board</h2>
+                    <h2>Message Board</h2>
                 </div>
             </div>
             <div class="row" id="messageSendSection">
-                <input type="text" id="chatInput" name="chatInput"/>
+                <input type="text" id="chatInput" name="chatInput" />
                 <button onclick="sendMessage()">Send</button>
             </div>
 
