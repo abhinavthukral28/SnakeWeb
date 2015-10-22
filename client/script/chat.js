@@ -30,10 +30,15 @@ function setUser() {
 
 }
 
+ 
+
+
 socket.on("registeredUser",function(data){
         var snake = new Snake(data.username,data.color,data.x,data.y);
         Game.snakes.push(snake);
         Game.userSnake = snake;
+        
+        addReadyButton();
     
 });
 
@@ -47,3 +52,16 @@ socket.on("message", function (data) {
     appendMessage(data.message, data.userName);
 });
 
+
+socket.on("readyRecieved",function(){
+   $("#readyButton").attr("disabled","disabled"); 
+});
+function readyUp()
+{
+      var data = {
+            userName: user,
+        };
+    socket.emit("ready", data);
+    
+    
+}

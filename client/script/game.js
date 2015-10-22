@@ -55,6 +55,7 @@ function drawCanvas() {
     for (var i = 0; i < Game.snakes.length; i++) {
         snake = Game.snakes[i];
         if (eatingFood(snake)) {
+            if (snake == userSnake)
             resetFood();
             snake.addNode();
         }
@@ -115,8 +116,9 @@ function handleTimer() {
 }
 
 function resetFood() {
-    //send food over socket as well
-
+    
+    socket.emit("score",food);
+    
     food.x = Math.random() * ((canvas.width - food.radius) - food.radius) + food.radius;
     food.y = Math.random() * ((canvas.height - food.radius) - food.radius) + food.radius;
 }
@@ -213,3 +215,5 @@ function eatingFood(snake) {
 
 
 }
+
+

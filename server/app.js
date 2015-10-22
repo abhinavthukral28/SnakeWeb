@@ -5,11 +5,9 @@ var path = require('path');
 var clientHome = "../client/";
 var homePage = clientHome + "index.html";
 var io = require("socket.io")(app)
-var chat = require('./ChatServer.js')(io);
-var user = require("./game.js")(io);
+var game = require("./game.js")(io);
 app.listen(process.env.PORT, process.env.IP);
 
-var users = {};
 
 function handler(req, res) {
     var pathSplit = req.url.split(path.sep);
