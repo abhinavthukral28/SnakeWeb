@@ -34,11 +34,22 @@ var game = function(io) {
         socket.on('message', function(data) {
             socket.broadcast.emit('message', data);
         });
+        socket.on('score', function(userName) {
+            if (socket.hasOwnProperty('user')) {
+                socket.user.incrementScore();
+            }
+        });
+        socket.on('food', function(userName) {
+            if (socket.hasOwnProperty('user')) {
+                socket.user.incrementScore();
+            }
+        });
+        
         socket.on('disconnect', function(userName) {
             if (socket.hasOwnProperty('user')) {
                 users.splice(socket.user.index, 1);
             }
-        })
+        });
     });
 
 }
