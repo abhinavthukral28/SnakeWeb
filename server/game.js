@@ -4,6 +4,7 @@ var User = require("./user.js");
 var game = function(io) {
     var users = [];
     var colors = ["red", "blue", "green", "orange"];
+    var winner;
 
     var startPoints = [
         [20, 50],
@@ -42,6 +43,9 @@ var game = function(io) {
         socket.on('food', function(userName) {
             if (socket.hasOwnProperty('user')) {
                 socket.user.incrementScore();
+                if(socket.user.getScore() >= 20) {
+                    socket.broadcast.emit('winner', userName)
+                }
             }
         });
         

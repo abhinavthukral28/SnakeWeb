@@ -6,7 +6,10 @@
         this.incrementScore = function(){
             score = score + 1;
             return score;
-        }
+        };
+        this.getScore = function(){
+          return score;
+        };
     }
     module.exports = user;
 
