@@ -1,6 +1,7 @@
  var Snake = function(username,color,x,y) {
   var thisObj = this;
-  var DIRECTION = Snake.directions.UP;
+  this.userName = username;
+  var DIRECTION = Snake.directions.DOWN;
   var color = color;
   var length;
   var nodes = [];
@@ -47,9 +48,10 @@
    return color;
   }
 
-  this.startTurn = function(direction,callback) {
+  this.startTurn = function(direction) {
 
-
+   
+   socket.emit("newTurn",direction);
    var pivot = [];
    pivot[0] = nodes[0].x;
    pivot[1] = nodes[0].y;

@@ -5,7 +5,6 @@ var game = function(io) {
     var users = []; 
     //available snake colors   
     var colors = ["red", "blue", "green", "orange"]; 
-    var winner;
     //players ready in the lobby
     var ready = 0; 
 
@@ -25,11 +24,11 @@ var game = function(io) {
             }
             else {
                 socket.user = new User(userName, colors[users.length], startPoints[users.length], users.length);
-                users.push(socket.user);
                 var snakeList = [];
                 for (var i in users) {
                     snakeList.push(users[i].snake);
                 }
+                users.push(socket.user);
                 socket.emit('registeredUser', {
                     ownSnake: socket.user.snake,
                     otherSnakes: snakeList
@@ -39,17 +38,21 @@ var game = function(io) {
 
         });
        //Players ready for game event 
-        socket.on('ready', function(userName){
-            socket.user.ready = true;
+        socket.on('ready', function(){
             ready = ready + 1;
             socket.emit('readyReceived');
             if(ready === users.length){
                 io.emit('startGame');
+                ready = 0;
             }
             else if (ready >= 2 && ready < users.length){
                 setTimeout(function () {
                     io.emit('startGame');
+                    ready = 0;
                 }, 20000);
+            }
+            else{
+                io.emit('startGame');
             }
         });
         //Chat message Event
@@ -58,7 +61,7 @@ var game = function(io) {
         });
         
         //Player Score Event, adds the players scores and transmits the coordinates of the new food
-        socket.on('score', function(data) {
+        socket.on('newScore', function(data) {
             if (socket.hasOwnProperty('user')) {
                 socket.user.incrementScore();
                 //if user won the game
@@ -75,15 +78,23 @@ var game = function(io) {
                 }
             }
         });
+        socket.on('newTurn', function(data) {
+            socket.broadcast.emit('turn', {
+                userName: socket.user.userName,
+                turnData: data
+            });
+        });
         //event on user disconnect
-        socket.on('disconnect', function(userName) {
+        socket.on('disconnect', function() {
             if (socket.hasOwnProperty('user')) {
-                for (var i = 0; i < users.length; i++) {
-                    if(users[i].userName === userName){
-                        users.splice(i, 1);
-                        break;
-                    }
-                }
+                console.log('disconnect');
+                // for (var i = 0; i < users.length; i++) {
+                //     if(users[i].userName === socket.user.userName){
+                //         users.splice(i, 1);
+                //         break;
+                //     }
+                users = [];
+                socket.broadcast.emit('userDisconnect', socket.user.userName);
             }
         });
     });

@@ -1,5 +1,5 @@
     var user = function(username, color, startPoint, index) {
-        this.username = username;
+        this.userName = username;
         this.ready = false;
         var score = 0;
         this.index = index;
@@ -17,7 +17,7 @@
 
     var Snake = function(username, color, startPoint) {
         this.color = color;
-        this.username;
+        this.userName = username;
         this.x = startPoint[0];
         this.y = startPoint[1];
     }

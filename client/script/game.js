@@ -6,7 +6,7 @@ var food = {};
 var keys = 0;
 var processing = false;
 var animate = false;
-var interval = 50;
+var interval = 7;
 var Game = {
     snakes: [],
     userSnake: undefined
@@ -55,7 +55,7 @@ function drawCanvas() {
     for (var i = 0; i < Game.snakes.length; i++) {
         snake = Game.snakes[i];
         if (eatingFood(snake)) {
-            if (snake == userSnake)
+            if (snake == Game.userSnake)
             resetFood();
             snake.addNode();
         }
@@ -63,7 +63,7 @@ function drawCanvas() {
         nodes = snake.getNodes();
 
         for (var j = 0; j < nodes.length; j++) {
-
+          
             tempNode = nodes[j];
 
             context.beginPath();
@@ -117,10 +117,14 @@ function handleTimer() {
 
 function resetFood() {
     
-    socket.emit("score",food);
-    
-    food.x = Math.random() * ((canvas.width - food.radius) - food.radius) + food.radius;
+     food.x = Math.random() * ((canvas.width - food.radius) - food.radius) + food.radius;
     food.y = Math.random() * ((canvas.height - food.radius) - food.radius) + food.radius;
+    
+    socket.emit("newScore",food);
+    
+    food.x = -40;
+    food.y = -123;
+    
 }
 
 function initHandlers() {
@@ -145,7 +149,6 @@ function handleKeyUp(e) {
             case LEFT_ARROW:
             case DOWN_ARROW:
                 keys--;
-                console.log(keys);
                 break;
             default:
                 break;
@@ -153,12 +156,14 @@ function handleKeyUp(e) {
     }
 }
 
+
 function handleKeyDown(e) {
 
 
     if (keys == 0) {
         var keyPress = e.which;
-        if (Game.userSnake != undefined) {
+        if (Game.userSnake != undefined && animate) {
+            console.log("TURNING");
             var currentDirection = Game.userSnake.getDirection();
             switch (keyPress) {
                 case UP_ARROW:
