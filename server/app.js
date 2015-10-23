@@ -6,7 +6,7 @@ var clientHome = "../client/";
 var homePage = clientHome + "index.html";
 var io = require("socket.io")(app)
 var game = require("./game.js")(io);
-app.listen(process.env.PORT, process.env.IP);
+app.listen('3000','127.0.0.1' );
 
 
 function handler(req, res) {
